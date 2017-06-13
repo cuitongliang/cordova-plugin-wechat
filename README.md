@@ -128,3 +128,9 @@ See [FAQ](https://github.com/xu-li/cordova-plugin-wechat/wiki/FAQ).
 # LICENSE
 
 [MIT LICENSE](http://opensource.org/licenses/MIT)
+
+
+1. 修复WEBCHATAPPID的bug，WebChat.java里面是小写，而配置文件是大写
+
+4. ~~Other APIs~~bug
+4. ~~Other APIs~~
