@@ -51,40 +51,40 @@ public class EntryActivity extends Activity implements IWXAPIEventHandler {
 
         if (Wechat.instance.getCurrentCallbackContext() == null) {
             startMainActivity();
-            return ;
+            return;
         }
 
         switch (resp.errCode) {
-            case BaseResp.ErrCode.ERR_OK:
-                switch (resp.getType()) {
-                    case ConstantsAPI.COMMAND_SENDAUTH:
-                        auth(resp);
-                        break;
+        case BaseResp.ErrCode.ERR_OK:
+            switch (resp.getType()) {
+            case ConstantsAPI.COMMAND_SENDAUTH:
+                auth(resp);
+                break;
 
-                    case ConstantsAPI.COMMAND_PAY_BY_WX:
-                    default:
-                        Wechat.instance.getCurrentCallbackContext().success();
-                        break;
-                }
-                break;
-            case BaseResp.ErrCode.ERR_USER_CANCEL:
-                Wechat.instance.getCurrentCallbackContext().error(Wechat.ERROR_WECHAT_RESPONSE_USER_CANCEL);
-                break;
-            case BaseResp.ErrCode.ERR_AUTH_DENIED:
-                Wechat.instance.getCurrentCallbackContext().error(Wechat.ERROR_WECHAT_RESPONSE_AUTH_DENIED);
-                break;
-            case BaseResp.ErrCode.ERR_SENT_FAILED:
-                Wechat.instance.getCurrentCallbackContext().error(Wechat.ERROR_WECHAT_RESPONSE_SENT_FAILED);
-                break;
-            case BaseResp.ErrCode.ERR_UNSUPPORT:
-                Wechat.instance.getCurrentCallbackContext().error(Wechat.ERROR_WECHAT_RESPONSE_UNSUPPORT);
-                break;
-            case BaseResp.ErrCode.ERR_COMM:
-                Wechat.instance.getCurrentCallbackContext().error(Wechat.ERROR_WECHAT_RESPONSE_COMMON);
-                break;
+            case ConstantsAPI.COMMAND_PAY_BY_WX:
             default:
-                Wechat.instance.getCurrentCallbackContext().error(Wechat.ERROR_WECHAT_RESPONSE_UNKNOWN);
+                Wechat.instance.getCurrentCallbackContext().success();
                 break;
+            }
+            break;
+        case BaseResp.ErrCode.ERR_USER_CANCEL:
+            Wechat.instance.getCurrentCallbackContext().error(Wechat.ERROR_WECHAT_RESPONSE_USER_CANCEL);
+            break;
+        case BaseResp.ErrCode.ERR_AUTH_DENIED:
+            Wechat.instance.getCurrentCallbackContext().error(Wechat.ERROR_WECHAT_RESPONSE_AUTH_DENIED);
+            break;
+        case BaseResp.ErrCode.ERR_SENT_FAILED:
+            Wechat.instance.getCurrentCallbackContext().error(Wechat.ERROR_WECHAT_RESPONSE_SENT_FAILED);
+            break;
+        case BaseResp.ErrCode.ERR_UNSUPPORT:
+            Wechat.instance.getCurrentCallbackContext().error(Wechat.ERROR_WECHAT_RESPONSE_UNSUPPORT);
+            break;
+        case BaseResp.ErrCode.ERR_COMM:
+            Wechat.instance.getCurrentCallbackContext().error(Wechat.ERROR_WECHAT_RESPONSE_COMMON);
+            break;
+        default:
+            Wechat.instance.getCurrentCallbackContext().error(Wechat.ERROR_WECHAT_RESPONSE_UNKNOWN);
+            break;
         }
 
         finish();

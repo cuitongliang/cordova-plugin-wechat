@@ -40,7 +40,7 @@ public class Wechat extends CordovaPlugin {
 
     public static final String TAG = "Cordova.Plugin.Wechat";
 
-    public static final String WXAPPID_PROPERTY_KEY = "wechatappid";
+    public static final String WXAPPID_PROPERTY_KEY = "WECHATAPPID";
 
     public static final String ERROR_WECHAT_NOT_INSTALLED = "未安装微信";
     public static final String ERROR_INVALID_PARAMETERS = "参数格式错误";
@@ -140,8 +140,7 @@ public class Wechat extends CordovaPlugin {
         return false;
     }
 
-    protected boolean share(CordovaArgs args, final CallbackContext callbackContext)
-            throws JSONException {
+    protected boolean share(CordovaArgs args, final CallbackContext callbackContext) throws JSONException {
         final IWXAPI api = getWXAPI();
 
         // check if installed
@@ -164,17 +163,17 @@ public class Wechat extends CordovaPlugin {
 
         if (params.has(KEY_ARG_SCENE)) {
             switch (params.getInt(KEY_ARG_SCENE)) {
-                case SCENE_FAVORITE:
-                    req.scene = SendMessageToWX.Req.WXSceneFavorite;
-                    break;
-                case SCENE_TIMELINE:
-                    req.scene = SendMessageToWX.Req.WXSceneTimeline;
-                    break;
-                case SCENE_SESSION:
-                    req.scene = SendMessageToWX.Req.WXSceneSession;
-                    break;
-                default:
-                    req.scene = SendMessageToWX.Req.WXSceneTimeline;
+            case SCENE_FAVORITE:
+                req.scene = SendMessageToWX.Req.WXSceneFavorite;
+                break;
+            case SCENE_TIMELINE:
+                req.scene = SendMessageToWX.Req.WXSceneTimeline;
+                break;
+            case SCENE_SESSION:
+                req.scene = SendMessageToWX.Req.WXSceneSession;
+                break;
+            default:
+                req.scene = SendMessageToWX.Req.WXSceneTimeline;
             }
         } else {
             req.scene = SendMessageToWX.Req.WXSceneTimeline;
@@ -303,8 +302,7 @@ public class Wechat extends CordovaPlugin {
         return true;
     }
 
-    protected WXMediaMessage buildSharingMessage(JSONObject params)
-            throws JSONException {
+    protected WXMediaMessage buildSharingMessage(JSONObject params) throws JSONException {
         Log.d(TAG, "Start building message.");
 
         // media parameters
@@ -331,58 +329,58 @@ public class Wechat extends CordovaPlugin {
             }
 
             // check types
-            int type = media.has(KEY_ARG_MESSAGE_MEDIA_TYPE) ? media
-                    .getInt(KEY_ARG_MESSAGE_MEDIA_TYPE) : TYPE_WECHAT_SHARING_WEBPAGE;
+            int type = media.has(KEY_ARG_MESSAGE_MEDIA_TYPE) ? media.getInt(KEY_ARG_MESSAGE_MEDIA_TYPE)
+                    : TYPE_WECHAT_SHARING_WEBPAGE;
 
             switch (type) {
-                case TYPE_WECHAT_SHARING_APP:
-                    WXAppExtendObject appObject = new WXAppExtendObject();
-                    appObject.extInfo = media.getString(KEY_ARG_MESSAGE_MEDIA_EXTINFO);
-                    appObject.filePath = media.getString(KEY_ARG_MESSAGE_MEDIA_URL);
-                    mediaObject = appObject;
-                    break;
+            case TYPE_WECHAT_SHARING_APP:
+                WXAppExtendObject appObject = new WXAppExtendObject();
+                appObject.extInfo = media.getString(KEY_ARG_MESSAGE_MEDIA_EXTINFO);
+                appObject.filePath = media.getString(KEY_ARG_MESSAGE_MEDIA_URL);
+                mediaObject = appObject;
+                break;
 
-                case TYPE_WECHAT_SHARING_EMOTION:
-                    WXEmojiObject emoObject = new WXEmojiObject();
-                    InputStream emoji = getFileInputStream(media.getString(KEY_ARG_MESSAGE_MEDIA_EMOTION));
-                    if (emoji != null) {
-                        try {
-                            emoObject.emojiData = Util.readBytes(emoji);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+            case TYPE_WECHAT_SHARING_EMOTION:
+                WXEmojiObject emoObject = new WXEmojiObject();
+                InputStream emoji = getFileInputStream(media.getString(KEY_ARG_MESSAGE_MEDIA_EMOTION));
+                if (emoji != null) {
+                    try {
+                        emoObject.emojiData = Util.readBytes(emoji);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    mediaObject = emoObject;
-                    break;
+                }
+                mediaObject = emoObject;
+                break;
 
-                case TYPE_WECHAT_SHARING_FILE:
-                    WXFileObject fileObject = new WXFileObject();
-                    fileObject.filePath = media.getString(KEY_ARG_MESSAGE_MEDIA_FILE);
-                    mediaObject = fileObject;
-                    break;
+            case TYPE_WECHAT_SHARING_FILE:
+                WXFileObject fileObject = new WXFileObject();
+                fileObject.filePath = media.getString(KEY_ARG_MESSAGE_MEDIA_FILE);
+                mediaObject = fileObject;
+                break;
 
-                case TYPE_WECHAT_SHARING_IMAGE:
-                    Bitmap image = getBitmap(message.getJSONObject(KEY_ARG_MESSAGE_MEDIA), KEY_ARG_MESSAGE_MEDIA_IMAGE, 0);
-                    mediaObject = new WXImageObject(image);
-                    image.recycle();
-                    break;
+            case TYPE_WECHAT_SHARING_IMAGE:
+                Bitmap image = getBitmap(message.getJSONObject(KEY_ARG_MESSAGE_MEDIA), KEY_ARG_MESSAGE_MEDIA_IMAGE, 0);
+                mediaObject = new WXImageObject(image);
+                image.recycle();
+                break;
 
-                case TYPE_WECHAT_SHARING_MUSIC:
-                    WXMusicObject musicObject = new WXMusicObject();
-                    musicObject.musicUrl = media.getString(KEY_ARG_MESSAGE_MEDIA_MUSICURL);
-                    musicObject.musicDataUrl = media.getString(KEY_ARG_MESSAGE_MEDIA_MUSICDATAURL);
-                    mediaObject = musicObject;
-                    break;
+            case TYPE_WECHAT_SHARING_MUSIC:
+                WXMusicObject musicObject = new WXMusicObject();
+                musicObject.musicUrl = media.getString(KEY_ARG_MESSAGE_MEDIA_MUSICURL);
+                musicObject.musicDataUrl = media.getString(KEY_ARG_MESSAGE_MEDIA_MUSICDATAURL);
+                mediaObject = musicObject;
+                break;
 
-                case TYPE_WECHAT_SHARING_VIDEO:
-                    WXVideoObject videoObject = new WXVideoObject();
-                    videoObject.videoUrl = media.getString(KEY_ARG_MESSAGE_MEDIA_VIDEOURL);
-                    mediaObject = videoObject;
-                    break;
+            case TYPE_WECHAT_SHARING_VIDEO:
+                WXVideoObject videoObject = new WXVideoObject();
+                videoObject.videoUrl = media.getString(KEY_ARG_MESSAGE_MEDIA_VIDEOURL);
+                mediaObject = videoObject;
+                break;
 
-                case TYPE_WECHAT_SHARING_WEBPAGE:
-                default:
-                    mediaObject = new WXWebpageObject(media.getString(KEY_ARG_MESSAGE_MEDIA_WEBPAGEURL));
+            case TYPE_WECHAT_SHARING_WEBPAGE:
+            default:
+                mediaObject = new WXWebpageObject(media.getString(KEY_ARG_MESSAGE_MEDIA_WEBPAGEURL));
             }
         }
 
@@ -490,7 +488,7 @@ public class Wechat extends CordovaPlugin {
 
                 Log.d(TAG, String.format("File was downloaded and cached to %s.", url));
 
-            } else if (url.startsWith("data:image")) {  // base64 image
+            } else if (url.startsWith("data:image")) { // base64 image
 
                 String imageDataBytes = url.substring(url.indexOf(",") + 1);
                 byte imageBytes[] = Base64.decode(imageDataBytes.getBytes(), Base64.DEFAULT);
@@ -500,7 +498,8 @@ public class Wechat extends CordovaPlugin {
 
             } else if (url.startsWith(EXTERNAL_STORAGE_IMAGE_PREFIX)) { // external path
 
-                url = Environment.getExternalStorageDirectory().getAbsolutePath() + url.substring(EXTERNAL_STORAGE_IMAGE_PREFIX.length());
+                url = Environment.getExternalStorageDirectory().getAbsolutePath()
+                        + url.substring(EXTERNAL_STORAGE_IMAGE_PREFIX.length());
                 inputStream = new FileInputStream(url);
 
                 Log.d(TAG, String.format("File is located on external storage at %s.", url));
